@@ -11,6 +11,7 @@ username:
  trim:true, 
  unique: true
 },
+
 email: 
 {
  type: String, 
@@ -26,6 +27,7 @@ type: String,
  minlength: [8, "Password must be at least 8 characters long!"],
  trim: true
 },
+
 role: 
 { enum: ["user", "admin"],
     default: "user"
@@ -34,4 +36,16 @@ role:
     timestamps: true
 });
 
-module.exports = mongoose.model('User', userSchema);
+userSchema.pre('save', async function () {
+    if (this.isNew || this.isModified('password')) {
+        const saltRounds = 10;
+        this.password = await bcrypt.hash(this.password, saltRounds)
+    }
+});
+
+userSchema.methods.isCorrectPassword = function(password){
+  return bcrypt.compare(password,this.password)
+}
+const User = new mongoose.model('User', userSchema);
+
+module.exports = User; 
