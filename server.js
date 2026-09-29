@@ -1,0 +1,13 @@
+//DEPENDANCIES 
+
+//DATABASE CONNECTION 
+//Mongoose/MongoDB Connection section
+
+//MIDDLEWARE
+
+//MOUNT ROUTES
+
+//LANDING ROUTE OR INITIAL PAGE
+
+
+//PORT
