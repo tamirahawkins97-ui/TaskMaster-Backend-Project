@@ -5,9 +5,8 @@ const mongoose = require('mongoose');
 const userSchema = mongoose.Schema({
 username:
 {
- type: mongoose.Schema.Types.ObjectId,
-  ref: "User", 
- required: true,
+ type: String,
+ required:[true, 'Username is required.'],
  trim:true, 
  unique: true
 },
@@ -15,9 +14,9 @@ username:
 email: 
 {
  type: String, 
- match: [/.+@.+\..+/, "Please provide a valid email addres."],
+ match: [/.+@.+\..+/, "Please provide a valid email address."],
  unique: true, 
- required: true
+ required: [true, 'email is required.']
 },
 
 password: 
@@ -25,7 +24,7 @@ password:
 type: String, 
  required: [true, "Password is required"],
  minlength: [8, "Password must be at least 8 characters long!"],
- trim: true
+ trim: [true, 'password is required.']
 },
 
 role: 
@@ -36,6 +35,7 @@ role:
     timestamps: true
 });
 
+//Pre save middle ware for hashing and salting 
 userSchema.pre('save', async function () {
     if (this.isNew || this.isModified('password')) {
         const saltRounds = 10;
