@@ -1,5 +1,6 @@
 //DEPENDANCIES 
-
+const express = reuquire('express');
+const router = express.Router();
 //DEPENDANCIES 
 
 //I.N.D.U.C.E.S
