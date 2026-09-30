@@ -1,3 +1,4 @@
+// Explicitly Destructure Allowed Fields in the Controller
 //DEPENDANCIES 
 const Project = require('../models/Projects');
 
