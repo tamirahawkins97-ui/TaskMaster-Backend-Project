@@ -6,14 +6,29 @@ const router = express.Router();
 //const { createNote } = require('../controllers/note-controllers');
 
 // Authentication Middleware
-const { verifyToken } = require('../middleware/auth-middleware');
-
+const {
+createProject,
+ getProjects, 
+ getProjectById,
+ updateProject,
+ deleteProject} = require('../controllers/projectControllers');
 
 //Index - All routes in this file must be protected by my authentication middleware. 
+const { verifyToken } = require('../middleware/auth-middleware');
 
+router.use(verifyToken);
+// --- Endpoints ---
+router.route('/')
+  .get(getProjects)
+  .post(createProject);
 
-    // Get all projects owned by the currently logged-in user.
-    //Get a single project by its ID. This must be protected by an ownership check—a user can only get a project they own.
+router.route('/:id')
+  .get(getProjectById)
+  .put(updateProject)
+  .delete(deleteProject);
+
+  // Get all projects owned by the currently logged-in user.
+   //Get a single project by its ID. This must be protected by an ownership check—a user can only get a project they own.
 
 //New - Generate a form for the creation of a new Product.  
 
