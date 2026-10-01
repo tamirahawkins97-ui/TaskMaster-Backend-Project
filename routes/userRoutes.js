@@ -20,7 +20,7 @@ const JWT_SECRET = process.env.JWT_SECRET
  //ensure the password gets hased by the model's presaved hook. 
 router.post('/register', async(req,res) =>{
     try {
-        const { username, email, password, role } = req.body;
+        const { username, email, password } = req.body;
 
         const existingUser = await User.findOne({ email });
 
@@ -31,8 +31,7 @@ router.post('/register', async(req,res) =>{
         const newUser = new User({
             username,
             email,
-            password,
-            role
+            password
         });
 
         await newUser.save();
