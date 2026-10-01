@@ -1,5 +1,6 @@
 //DEPENDANCIES 
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 //HASHING AND SALTING OPERATIONS.
 const userSchema = mongoose.Schema({
@@ -28,8 +29,9 @@ type: String,
 },
 
 role: 
-{ enum: ["user", "admin"],
-    default: "user"
+{ type: String,
+    enum: ["user", "admin"],
+    default: "user",
 }
 }, {
     timestamps: true

@@ -1,5 +1,5 @@
 //DEPENDANCIES 
-const express = reuquire('express');
+const express = require('express');
 const router = express.Router();
 
 //I.N.D.U.C.E.S
@@ -11,7 +11,7 @@ createProject,
  deleteProject} = require('../controllers/projectControllers');
 
 // Authentication Middleware
-const { verifyToken } = require('../middleware/auth-middleware');
+const verifyToken = require('../utils/auth-middleware');
 
 //Index - All routes in this file must be protected by my authentication middleware. 
 router.use(verifyToken);
@@ -37,21 +37,8 @@ router.route('/:id')
 //Update - Update a project. Also protected by an ownership check.
 
 //Create - Create a new project. The owner’s ID must be taken from the req.user object (provided by the auth middleware) and saved with the new project.
-router.post('/projects', async (req,res) =>{
-    try{
-        const createdProject = await Project.create(req.body);
-        console.log("Project has been successfully created!")
-
-        console.log(req.body)
-
-        if(req.is("application.json")){
-            return res.redirect('/projects')
-        }
-    } catch (error) {
-        console.error("Error creating the project. ", error)
-        res.status(400).send("unable to create project.");
-    }
-});
 //Edit -
 
 //Show -
+
+module.exports = router;

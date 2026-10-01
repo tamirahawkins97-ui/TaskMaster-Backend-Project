@@ -1,9 +1,9 @@
 //DEPENDANCIES 
-const express = reuquire('express');
+const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const User = require('../models/Users');
 
 const JWT_SECRET = process.env.JWT_SECRET
 //I.N.D.U.C.E.S
@@ -20,7 +20,7 @@ const JWT_SECRET = process.env.JWT_SECRET
  //ensure the password gets hased by the model's presaved hook. 
 router.post('/register', async(req,res) =>{
     try {
-        const { username, email, password } = req.body;
+        const { username, email, password, role } = req.body;
 
         const existingUser = await User.findOne({ email });
 
@@ -31,7 +31,8 @@ router.post('/register', async(req,res) =>{
         const newUser = new User({
             username,
             email,
-            password
+            password,
+            role
         });
 
         await newUser.save();
@@ -73,6 +74,8 @@ router.post('/login', async (req,res) => {
         const userData = user.toObject();
         delete userData.password;
 
+        return res.status(200).json({ token, user: userData });
+
     } catch(error) {
         return res.status(500).json({ error: error.message })
     }
@@ -80,4 +83,6 @@ router.post('/login', async (req,res) => {
 
 //Edit -
 
-//Show -  
+//Show -
+
+module.exports = router;

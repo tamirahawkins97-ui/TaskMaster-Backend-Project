@@ -4,18 +4,30 @@ const Project = require('../models/Projects');
 
 // 1. CREATE A PROJECT
 const createProject = async (req,res) => {
-    try{
-        const {name, user } = req.body; 
-        const userId = req.user?._id || req.user.id;
+  try {
+    const { name, description } = req.body || {};
+    const userId = req.user?._id || req.user?.id;
+
+    if (typeof name !== 'string' || !name.trim()) {
+      return res.status(400).json({ message: 'Project name is required.' });
+    }
+    if (typeof description !== 'string' || !description.trim()) {
+      return res.status(400).json({ message: 'Project description is required.' });
+    }
+    if (!userId) {
+      return res.status(401).json({ message: 'User identity missing from token.' });
+    }
 
         const project = await Project.create({
-            name,
-            user: userId
+      name: name.trim(),
+            user: userId,
+      description: description.trim()
         });
 
-        res.status(201).json({project});
-    } catch(error){
-        return res.status(500).json({message: 'Error creating project.',  error: error.message}); 
+    return res.status(201).json({ project });
+  } catch (error) {
+    const statusCode = error.name === 'ValidationError' ? 400 : 500;
+    return res.status(statusCode).json({ message: 'Error creating project.', error: error.message });
     }
 
     // 2. GET ALL PROJECTS (Scoped strictly to logged-in user)

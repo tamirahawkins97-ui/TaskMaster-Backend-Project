@@ -2,7 +2,8 @@
 const express = require('express');
 const app = express();
 require('dotenv').config();
-const PORT = process.env.PORT
+const morgan = require("morgan");
+const PORT = process.env.PORT || 1221;
 
 //Project Routes included here
 const connectionDB = require('./db/connection')
@@ -17,8 +18,12 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 //MOUNT ROUTES
-
+app.use('/api/projects', require('./routes/projectRoutes'));
+app.use('/api/users', require('./routes/userRoutes'));
+const taskRoutes = require('./routes/taskRoutes');
+app.use('/api/projects/:projectId/tasks', taskRoutes);
+app.use('/api/tasks', taskRoutes.taskItemRouter);
 //PORT
-app.listen(PORT, (req,res) =>{
+app.listen(PORT, () =>{
     console.log(`Server successfully connected to port: http://localhost:${PORT}`)
 })
